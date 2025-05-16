@@ -50,6 +50,9 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+const { authMiddleware } = require('./auth');
+
+
 app.get('/user/profile', (req, res) => {
   res.send('Welcome to your profile');
 });
@@ -63,7 +66,7 @@ app.get('/api/task-lists/:userId', (req, res) => {
     `SELECT * FROM task_lists WHERE owner_id = ?`,
     [req.params.userId],
     (err, rows) => {
-      if (err) return res.status(500).json({ error: err.message });
+      // if (err) return res.status(500).json({ error: err.message })
       res.status(200).json(rows);
     }
   );
@@ -166,7 +169,7 @@ app.delete('/api/tasks/:id', (req, res) => {
   });
 });
 
-app.get('/api/personal-tasks', (req, res) => {
+app.get('/api/personal-tasks' ,authMiddleware,  (req, res) => {
   const userId = req.user.id;
   db.all(`SELECT * FROM personal_tasks WHERE user_id = ?`, [userId], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -174,7 +177,7 @@ app.get('/api/personal-tasks', (req, res) => {
   });
 });
 
-app.post('/api/personal-tasks', (req, res) => {
+app.post('/api/personal-tasks',authMiddleware,  (req, res) => {
   const { title, description, due_date, priority } = req.body;
   const userId = req.user.id;
 
@@ -188,7 +191,7 @@ app.post('/api/personal-tasks', (req, res) => {
   );
 });
 
-app.put('/api/personal-tasks/:id', (req, res) => {
+app.put('/api/personal-tasks/:id',authMiddleware,  (req, res) => {
   const { title, description, due_date, priority, completed } = req.body;
   const taskId = req.params.id;
   const userId = req.user.id;
@@ -204,7 +207,7 @@ app.put('/api/personal-tasks/:id', (req, res) => {
   );
 });
 
-app.delete('/api/personal-tasks/:id', (req, res) => {
+app.delete('/api/personal-tasks/:id',authMiddleware,  (req, res) => {
   const taskId = req.params.id;
   const userId = req.user.id;
 

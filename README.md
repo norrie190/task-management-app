@@ -1,10 +1,18 @@
+# Task Management System  
+*By Sam Norrie*  
+*c4021435
 
 
-Logins for test users (Sarah and Bob)
-Sarah:
-Email - sarah@example.com
-Password - password123
+## About The Project  
+A full-stack task management system built with Node.js, Express, SQLite. Allows users to create tasks, organize them into lists, and collaborate in teams.  
 
-Bob:
-Email - bob@example.com
-Password - password456
+## Key Features  
+- **User roles** (Admin, Team Lead, Member)  
+- **Task organization** with due dates and priorities  
+- **Team collaboration** with shared task lists  
+
+# Admin Access  
+To login as an administrator:   
+2. Use these demo credentials:  
+   **Username:** admin@example.com 
+   **Password:** password123

@@ -15,7 +15,6 @@
   padding-bottom: 0.5rem;
 }
 
-/* Form */
 .dashboard-form {
   display: flex;
   flex-wrap: wrap;
@@ -51,45 +50,21 @@
   background-color: #0277bd;
 }
 
-.task-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
 }
 
-.task-card {
-  background: white;
-  padding: 1.2rem 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: box-shadow 0.3s ease;
-  position: relative;
+.task-table th,
+.task-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
 }
 
-.task-card:hover {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.task-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.4rem;
-}
-
-.task-desc {
-  font-size: 0.95rem;
-  color: #555;
-  margin-bottom: 0.75rem;
-}
-
-.task-due {
-  font-size: 0.85rem;
-  color: #888;
-}
-
-.task-priority {
-  font-weight: 600;
-  margin-top: 0.6rem;
+.task-table th {
+  background-color: #f4f4f4;
 }
 
 .priority-low {
@@ -104,19 +79,42 @@
   color: #e74c3c;
 }
 
+.completed {
+  color: green;
+  font-weight: bold;
+}
 
-.delete-task-btn {
-  margin-top: 1rem;
-  background: #e53935;
-  color: #fff;
-  border: none;
-  padding: 0.5rem 0.75rem;
+.incomplete {
+  color: red;
+  font-weight: bold;
+}
+
+
+.delete-task-btn,
+.task-table button {
+  padding: 5px 10px;
   font-size: 0.9rem;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  border: none;
+}
+
+.delete-task-btn {
+  background-color: #e74c3c;
+  color: white;
 }
 
 .delete-task-btn:hover {
-  background: #c62828;
+  background-color: #c62828;
+}
+
+.task-table button {
+  margin-right: 8px;
+  background-color: #4caf50;
+  color: white;
+}
+
+.task-table button:hover {
+  background-color: #388e3c;
 }

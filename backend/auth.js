@@ -6,18 +6,21 @@ const SECRET_KEY = process.env.JWT_SECRET || 'secretkey101';
 const db = new sqlite3.Database('./taskmanagement.db');
 
 const HARDCODED_ADMIN = {
-  email: 'admin@example.com',
-  password: 'password123',
   id: 0,
+  email: 'admin@example.com',
+  username: 'admin',
   role: 'admin',
+  password: 'password123',
 };
 
 const loginUser = (email, password) => {
   return new Promise((resolve, reject) => {
     if (email === HARDCODED_ADMIN.email && password === HARDCODED_ADMIN.password) {
-      const token = jwt.sign({ id: HARDCODED_ADMIN.id, role: HARDCODED_ADMIN.role }, SECRET_KEY, {
-        expiresIn: '1h',
-      });
+      const token = jwt.sign(
+        { id: HARDCODED_ADMIN.id, role: HARDCODED_ADMIN.role, username: HARDCODED_ADMIN.username },
+        SECRET_KEY,
+        { expiresIn: '1h' }
+      );
       return resolve({ user: HARDCODED_ADMIN, token });
     }
 
@@ -28,24 +31,37 @@ const loginUser = (email, password) => {
       const isValid = await bcryptjs.compare(password, user.password);
       if (!isValid) return reject(new Error('Incorrect password'));
 
-      delete user.password;
+      const userWithoutPassword = {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role || 'user',
+      };
 
-      const token = jwt.sign({ id: user.id, role: user.role }, SECRET_KEY, {
-        expiresIn: '1h',
-      });
+      const token = jwt.sign(
+        {
+          id: user.id,
+          role: user.role || 'user',
+          username: user.username,
+        },
+        SECRET_KEY,
+        { expiresIn: '1h' }
+      );
 
-      resolve({ user, token });
+      resolve({ user: userWithoutPassword, token });
     });
   });
 };
 
 const authMiddleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers['authorization'];
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(401).json({ message: 'No token provided' });
   }
 
   const token = authHeader.split(' ')[1];
+
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
     req.user = decoded;
@@ -56,8 +72,10 @@ const authMiddleware = (req, res, next) => {
 };
 
 const isAdmin = (req, res, next) => {
-  if (req.user?.role === 'admin') return next();
-  res.status(403).json({ message: 'Access denied. Admins only.' });
+  if (req.user && req.user.role === 'admin') {
+    return next();
+  }
+  return res.status(403).json({ message: 'Access denied. Admins only.' });
 };
 
 module.exports = { loginUser, authMiddleware, isAdmin };

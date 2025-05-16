@@ -9,36 +9,70 @@ const Dashboard = () => {
     description: '',
     due_date: '',
     priority: 'Low',
+    completed: false,
   });
 
-  
   useEffect(() => {
-    axios.get('/api/my-tasks') 
+    axios
+      .get('/api/personal-tasks', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
       .then(res => setTasks(res.data))
-      .catch(console.error);
+      .catch(err => console.error('Error fetching tasks:', err));
   }, []);
 
   const handleDelete = (id) => {
-    axios.delete(`/api/my-tasks/${id}`)
+    axios
+      .delete(`/api/personal-tasks/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
       .then(() => setTasks(prev => prev.filter(task => task.id !== id)))
-      .catch(console.error);
+      .catch(err => console.error('Error deleting task:', err));
   };
 
   const handleCreate = (e) => {
     e.preventDefault();
-    axios.post('/api/my-tasks', newTask)
+    axios
+      .post('/api/personal-tasks', newTask, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
       .then(res => {
         setTasks(prev => [...prev, res.data]);
-        setNewTask({ title: '', description: '', due_date: '', priority: 'Low' });
+        setNewTask({ title: '', description: '', due_date: '', priority: 'Low', completed: false });
       })
-      .catch(console.error);
+      .catch(err => console.error('Error creating task:', err));
+  };
+
+  const toggleComplete = (task) => {
+    const updatedTask = {
+      ...task,
+      completed: task.completed ? 0 : 1,
+    };
+
+    axios
+      .put(`/api/personal-tasks/${task.id}`, updatedTask, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then(() => {
+        setTasks(prev =>
+          prev.map(t => (t.id === task.id ? { ...t, completed: updatedTask.completed } : t))
+        );
+      })
+      .catch(err => console.error('Error toggling completion:', err));
   };
 
   return (
     <div className="dashboard-container">
-      <h1 className="dashboard-title">My Dashboard</h1>
+      <h1 className="dashboard-title">My Tasks</h1>
 
-      {/* Task creation form */}
       <form className="dashboard-form" onSubmit={handleCreate}>
         <input
           type="text"
@@ -71,25 +105,44 @@ const Dashboard = () => {
         <button type="submit">Add Task</button>
       </form>
 
-      {/* Task list */}
       {tasks.length === 0 ? (
         <p>No personal tasks yet.</p>
       ) : (
-        <div className="task-grid">
-          {tasks.map(task => (
-            <div className="task-card" key={task.id}>
-              <h3 className="task-title">{task.title}</h3>
-              <p className="task-desc">{task.description}</p>
-              <p className="task-due">Due: {task.due_date}</p>
-              <p className={`task-priority priority-${task.priority.toLowerCase()}`}>
-                {task.priority}
-              </p>
-              <button className="delete-task-btn" onClick={() => handleDelete(task.id)}>
-                Delete
-              </button>
-            </div>
-          ))}
-        </div>
+        <table className="task-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Due Date</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map(task => (
+              <tr key={task.id}>
+                <td>{task.title}</td>
+                <td>{task.description}</td>
+                <td>{new Date(task.due_date).toLocaleDateString()}</td>
+                <td className={`priority-${task.priority.toLowerCase()}`}>
+                  {task.priority}
+                </td>
+                <td className={task.completed ? 'completed' : 'incomplete'}>
+                  {task.completed ? '✅ Completed' : '❌ Incomplete'}
+                </td>
+                <td>
+                  <button onClick={() => toggleComplete(task)}>
+                    {task.completed ? 'Mark Incomplete' : 'Mark Complete'}
+                  </button>
+                  <button className="delete-task-btn" onClick={() => handleDelete(task.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
