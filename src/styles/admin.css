@@ -1,0 +1,177 @@
+
+.admin-glass {
+  background: linear-gradient(135deg, rgba(187, 222, 251, 0.9), rgba(179, 229, 252, 0.9));
+  min-height: 100vh;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+}
+
+.admin-header-glass {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 20px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+}
+
+.admin-header-glass h1 {
+  font-size: 2rem;
+  color: #0d47a1;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.admin-tabs-3d h2 {
+  font-size: 1.4rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #01579b;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-create-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-create-form input,
+.admin-create-form select,
+.admin-create-form button {
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+}
+
+.admin-create-form input:focus,
+.admin-create-form select:focus {
+  border-color: #29b6f6;
+  box-shadow: 0 0 0 3px rgba(41, 182, 246, 0.2);
+}
+
+.primary-btn {
+  background-color: #0288d1;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.primary-btn:hover {
+  background-color: #0277bd;
+}
+
+.admin-user-select-box {
+  max-height: 160px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  border-radius: 8px;
+  min-width: 220px;
+  background: #f9f9f9;
+  font-size: 0.9rem;
+}
+
+.admin-task-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.admin-task-table th,
+.admin-task-table td {
+  padding: 0.85rem 1.2rem;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-task-table th {
+  background: #e1f5fe;
+  font-weight: bold;
+  color: #0277bd;
+}
+
+.admin-task-table tbody tr:hover {
+  background: #f6fbff;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #b71c1c;
+}
+
+.employee-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.employee-card-3d {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.employee-card-3d:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.avatar-glow {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #29b6f6, #0288d1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 0 10px rgba(33, 150, 243, 0.4);
+}
+
+.employee-info h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #2c3e50;
+}
+
+.employee-role {
+  margin-top: 0.3rem;
+  color: #607d8b;
+  font-size: 0.9rem;
+}
